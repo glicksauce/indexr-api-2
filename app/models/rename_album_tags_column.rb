@@ -1,0 +1,2 @@
+class RenameAlbumTagsColumn < ApplicationRecord
+end
