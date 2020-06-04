@@ -5,7 +5,8 @@ class AlbumTagsController < ApplicationController
   def index
     @album_tags = AlbumTag.all
 
-    render json: @album_tags.to_json(include: [:album, :tag])
+    # render json: @album_tags.to_json(include: [:album, :tag])
+    render json: @album_tags.to_json(include: :tag)
   end
 
   # GET /album_tags/1

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user.to_json(include: :albums)
   end
 
   # POST /users
@@ -46,6 +46,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:last_access_token, :dbx_id)
+      params.require(:user).permit(:last_access_token, :dbx_user_id)
     end
 end

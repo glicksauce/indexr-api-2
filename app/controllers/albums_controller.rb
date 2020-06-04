@@ -41,11 +41,11 @@ class AlbumsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_album
-      @album = Album.find(params[:id])
+      @album = Album.where(dbx_image_id: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def album_params
-      params.require(:album).permit(:image_id, :image_name, :image_path, :dbx_user_id, :client_modified_date)
+      params.require(:album).permit(:dbx_image_id, :image_name, :image_path, :dbx_user_id, :client_modified_date)
     end
 end
