@@ -10,18 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_02_234707) do
+ActiveRecord::Schema.define(version: 2020_06_04_011632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "album_tags", id: false, force: :cascade do |t|
+  create_table "album_tags", force: :cascade do |t|
     t.integer "album_id"
     t.integer "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["album_id"], name: "index_album_tags_on_album_id"
-    t.index ["tag_id"], name: "index_album_tags_on_tag_id"
   end
 
   create_table "albums", force: :cascade do |t|

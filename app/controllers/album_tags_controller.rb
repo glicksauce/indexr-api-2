@@ -16,7 +16,11 @@ class AlbumTagsController < ApplicationController
 
   # POST /album_tags
   def create
-    @album_tag = AlbumTag.new(album_tag_params)
+    @album_id = Album.where(dbx_image_id: params[:album_dbx_image_id]).pluck("id")
+    @album_tag = AlbumTag.new(tag_id: album_tag_params[:tag_id], album_id: @album_id[0])
+  
+    # render json: params
+    # render json: album_tag_params[:tag_id]
 
     if @album_tag.save
       render json: @album_tag, status: :created, location: @album_tag
@@ -36,7 +40,8 @@ class AlbumTagsController < ApplicationController
 
   # DELETE /album_tags/1
   def destroy
-    @album_tag.destroy
+    render json: params
+    # @album_tag.destroy
   end
 
   private
@@ -47,6 +52,6 @@ class AlbumTagsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def album_tag_params
-      params.require(:album_tag).permit(:image_id, :tag_id)
+      params.require(:album_tag).permit(:album_id, :tag_id, :dbx_image_id)
     end
 end
