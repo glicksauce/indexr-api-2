@@ -38,10 +38,13 @@ class AlbumTagsController < ApplicationController
     end
   end
 
-  # DELETE /album_tags/1
-  def destroy
+  # DELETE /destroy_album_tags
+  # takes the dbx image id finds the related album_tags then destroys all of them
+  def destroy_album_tags
+
+    @album_id = Album.where(dbx_image_id: params[:album_dbx_image_id]).pluck("id")
+    AlbumTag.where(album_id: @album_id[0]).destroy_all
     render json: params
-    # @album_tag.destroy
   end
 
   private

@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :create] do
     resources :albums, param: :dbx_image_id, only: [:create, :show, :update] do
       resources :tags, only: [:index, :create, :show, :update]
-      resources :album_tags, only: [:index, :create, :show, :update, :destroy]
+      delete 'destroy_album_tags', to: 'album_tags#destroy_album_tags', as: :destroy_album_tags
+      resources :album_tags, only: [:index, :create, :show, :update, :destroy, :destroy_album_tags]
     end
   end
 end
