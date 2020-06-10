@@ -8,6 +8,13 @@ class AlbumsController < ApplicationController
     render json: @albums.to_json(include: :tags)
   end
 
+  # Get /random_album_id
+  # returns a random album
+  def random_album_id
+    @album = Album.where(dbx_user_id: params[:user_id]).sample
+    render json: @album
+  end
+
   # GET /albums/1
   def show
     render json: @album.to_json(include: :tags)

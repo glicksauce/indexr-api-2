@@ -3,6 +3,13 @@ Rails.application.routes.draw do
   resources :tags
   # resources :albums
   resources :users, only: [:index, :show, :create] do
+    get 'user_album_tags', to: 'album_tags#user_album_tags', as: :user_album_tags
+    resources :album_tags, only: [:user_album_tags]
+
+    #random album_dbx_image route
+    get 'albums/random_album_id', to: 'albums#random_album_id', as: :random_album_id
+    resources :albums, only: [:random_album_id]
+    
     resources :albums, param: :dbx_image_id, only: [:create, :show, :update] do
       resources :tags, only: [:index, :create, :show, :update]
       delete 'destroy_album_tags', to: 'album_tags#destroy_album_tags', as: :destroy_album_tags

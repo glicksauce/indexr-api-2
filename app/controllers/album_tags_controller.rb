@@ -8,6 +8,13 @@ class AlbumTagsController < ApplicationController
     # render json: @album_tags.to_json(include: [:album, :tag])
     render json: @album_tags.to_json(include: :tag)
   end
+  
+  #GET /user_album_tags
+  # show all tags per given dbx_user_id
+  def user_album_tags
+    @album_tags = Tag.where(dbx_user_id: params[:user_id]).joins(:album_tags).group(:tag_string).order('COUNT(tag_string) DESC').count
+    render json: @album_tags
+  end
 
   # GET /album_tags/1
   def show
