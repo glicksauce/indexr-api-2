@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :album_tags
-  resources :tags
+  # resources :tags
   # resources :albums
   resources :users, only: [:index, :show, :create] do
     get 'user_album_tags', to: 'album_tags#user_album_tags', as: :user_album_tags
@@ -9,6 +9,12 @@ Rails.application.routes.draw do
     #random album_dbx_image route
     get 'albums/random_album_id', to: 'albums#random_album_id', as: :random_album_id
     resources :albums, only: [:random_album_id]
+
+
+    resources :albums, param: :tags, only: [:tags_search] do
+          #tags_search route
+          get 'tags_search', to: 'albums#tags_search', as: :tags_search
+    end
     
     resources :albums, param: :dbx_image_id, only: [:create, :show, :update] do
       resources :tags, only: [:index, :create, :show, :update]
