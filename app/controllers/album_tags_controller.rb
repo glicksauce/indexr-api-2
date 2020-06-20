@@ -1,5 +1,5 @@
 class AlbumTagsController < ApplicationController
-  before_action :set_album_tag, only: [:show, :update, :destroy]
+  before_action :set_album_tag, only: [:update, :destroy]
 
   # GET /album_tags
   def index

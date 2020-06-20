@@ -18,29 +18,42 @@ class AlbumsController < ApplicationController
   # Get /users/:user_id/albums/:album_tags/tags_search
   # returns albums that match tags provided (AND search)
   def tags_search
-    # @albums = Album.where(dbx_user_id: params[:user_id]).joins(:tags).where('tags.tag_string' => params[:album_tags])
+    # takes tag params and puts into array
     formatted_album_tags = params[:album_tags].split(',')
+
+    #get tag_ids, tag_strings and album_ids needed for search. 
+    # querying is done with 'IN' searches on the tags, a search for ['long','hair'] will return all id's for both 'long' and 'hair'. the fuction below filters only results that have all tags
     @tag_ids = Tag.where('tag_string ILIKE ANY (array[?])', formatted_album_tags).pluck("id")
     @tag_strings = Tag.where('tag_string ILIKE ANY (array[?])', formatted_album_tags).pluck("tag_string")
-    @album_tag_ids = AlbumTag.where(tag_id: @tag_ids)
     @album_ids = AlbumTag.where(tag_id: @tag_ids).pluck("album_id")
+
+    
     @albums = []
+    #for each album_id find out if contains all tag params
     @album_ids.each do | album_id |
+      #pull all tag_strings from above query
       @album_result_tags = Album.find(album_id).tags.pluck("tag_string")
-      result = @album_result_tags.all? { |tag| @tag_strings.include? tag}
+
+      #From inside out:
+      #Does a tag param include a queried tag
+      #Do the queried tags include all the tag params
+      result = @tag_strings.all? {|tag_string| @album_result_tags.any? {|tag| tag_string.include? tag}}
       if (result)
         @albums.push(album_id)
       end
     end
-    # @albums = Album.where(dbx_user_id: params[:user_id]).joins(:tags).where("tags.tag_string @> ARRAY[?]::string", ['17','44'])
+
 
 
     # OR match try this:
     # @albums = Album.where(dbx_user_id: params[:user_id]).joins(:tags).where('tags.tag_string': ['ultimate','dp','dfdfd'])
     #or
     #@albums = Album.where(dbx_user_id: params[:user_id]).joins(:tags).where('tags.tag_string ILIKE ANY (array[?])', ['jpark','dp'])
+    #or    
+    # @albums = Album.where(dbx_user_id: params[:user_id]).joins(:tags).where("tags.tag_string @> ARRAY[?]::string", ['17','44'])
+
     # render json: @albums.to_json(include: :tags)
-    render json: @albums
+    render json: Album.find(@albums)
   end
 
   # GET /albums/1
