@@ -61,6 +61,13 @@ class AlbumsController < ApplicationController
     render json: @album.to_json(include: :tags)
   end
 
+  # Get /albums/:album_directory/directory_search
+  def directory_search
+    Album.where("image_path LIKE ?", params[:album_directory] + '%')
+  end
+
+
+  
   # POST /albums
   def create
     @album = Album.new(album_params)

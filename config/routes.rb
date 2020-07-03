@@ -11,10 +11,15 @@ Rails.application.routes.draw do
     resources :albums, only: [:random_album_id]
 
 
-    resources :albums, param: :tags, only: [:tags_search] do
-          #tags_search route
-          get 'tags_search', to: 'albums#tags_search', as: :tags_search
+    resources :albums, param: :directory, only: [:directory_search] do
+          #directory_search route
+          get 'directory_search', to: 'albums#directory_search', as: :directory_search
     end
+
+    resources :albums, param: :tags, only: [:tags_search] do
+      #tags_search route
+      get 'tags_search', to: 'albums#tags_search', as: :tags_search
+end
     
     resources :albums, param: :dbx_image_id, only: [:create, :show, :update] do
       resources :tags, only: [:index, :create, :show, :update]
