@@ -61,9 +61,10 @@ class AlbumsController < ApplicationController
     render json: @album.to_json(include: :tags)
   end
 
-  # Get /albums/:album_directory/directory_search
+  # Get /users/:user_id/albums/directory_search/:directory(.:format) 
   def directory_search
-    Album.where("image_path LIKE ?", params[:album_directory] + '%')
+    @albums = Album.where("image_path LIKE ?", params[:directory] + '%')
+    render json: @albums
   end
 
 
