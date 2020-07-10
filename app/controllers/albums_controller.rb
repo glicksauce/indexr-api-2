@@ -64,7 +64,20 @@ class AlbumsController < ApplicationController
   # Get /users/:user_id/albums/directory_search/:directory(.:format) 
   def directory_search
     @albums = Album.where("image_path LIKE ?", params[:directory] + '%')
-    render json: @albums
+    @parsedAlbums = []
+    
+    #count the number of slashes in the directory for searc
+    @baseURLSlashCount = params[:directory].count("/")
+    @albums.each do |album|
+      albumDirectorySlashCount = album.image_path.count("/")
+      #if the number of slashes in the album match the number in directory then we know the image is in the same directory
+      if albumDirectorySlashCount == @baseURLSlashCount
+          @parsedAlbums.push(album)
+      end
+    end
+
+    #need to count occurance of '/'
+    render json: @parsedAlbums
   end
 
 
